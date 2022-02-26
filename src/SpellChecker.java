@@ -6,17 +6,17 @@ import java.util.Arrays;
 
 public class SpellChecker
 {
-  private ArrayList<String> dictionary;
+  private ArrayList<String> mydictionary;
 
   // constructor; uses try-catch syntax which we haven't discussed!
   public SpellChecker()
   {
-    importDictionary();
+    importMyDictionary();
   }
 
   public ArrayList<String> getDictionary()
   {
-    return dictionary;
+    return mydictionary;
   }
 
   /** This uses LINEAR search to find a word in the dictionary ArrayList and also
@@ -29,11 +29,11 @@ public class SpellChecker
   {
     int numChecks = 0;
     
-    for(int i=0; i < dictionary.size(); i++)
+    for(int i=0; i < mydictionary.size(); i++)
     {
       numChecks++;
       
-      if (word.equals(dictionary.get(i)))
+      if (word.equals(mydictionary.get(i)))
       {
         System.out.println("-- LINEAR SEARCH: Number of words checked (loops/runtime): " + numChecks);
         return true;
@@ -52,19 +52,43 @@ public class SpellChecker
   */
   public boolean binarySpellCheck(String word)
   {
-    /* IMPLEMENT ME! */
+    int left = 0;
+    int right = mydictionary.size() - 1;
 
-    return false; // STUB
+    int numOfChecks = 0;
+
+    while (left <= right)
+    {
+      numOfChecks++;
+
+      int middle = (left + right) / 2;
+
+      if (word.compareTo(mydictionary.get(middle)) < 0)
+      {
+        right = middle - 1;
+      }
+      else if (word.compareTo(mydictionary.get(middle)) > 0)
+      {
+        left = middle + 1;
+      }
+      else
+      {
+        System.out.println("-- BINARY SEARCH: Number of words checked (loops/runtime): " + numOfChecks);
+        return true;
+      }
+    }
+    System.out.println("-- BINARY SEARCH: Number of words checked (loops/runtime): " + numOfChecks);
+    return false;
   }
 
   // private helper method, called in the constructor, which loads the words
   // from the dictionary.txt text file into the "dictionary" instance variable!
-  private void importDictionary()
+  private void importMyDictionary()
   {
     String[] tmp = null;
     try
     {
-      FileReader fileReader = new FileReader("src\\dictionary.txt");
+      FileReader fileReader = new FileReader("src\\mydictionary.txt");
       BufferedReader bufferedReader = new BufferedReader(fileReader);
       ArrayList<String> lines = new ArrayList<String>();
       String line = null;
@@ -83,6 +107,6 @@ public class SpellChecker
       System.out.println("Error importing file; unable to access "+ e.getMessage());
     }
 
-    dictionary = new ArrayList<String>(Arrays.asList(tmp));
+    mydictionary = new ArrayList<String>(Arrays.asList(tmp));
   }
 }
